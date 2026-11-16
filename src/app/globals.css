@@ -1,0 +1,448 @@
+/* Site styles. Tailwind v4 + the bom-ui theme; every color is a shadcn variable, so light / dark need no extra rules. */
+@import "tailwindcss";
+@import "@bomtawep/ui/theme.css";
+
+/* Noto Sans Thai from next/font, used by the site and by every component (Tailwind's font-sans). */
+@theme inline {
+  --font-sans: var(--font-noto-thai), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+:root {
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --page-max: 54rem;
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+}
+
+/* Site classes live in the components layer so Tailwind utilities on bom-ui components still win. */
+@layer components {
+/* ───── App shell ───── */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 3.5rem;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--background) 85%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.site-header .site-header__sep {
+  align-self: center;
+  height: 1.25rem;
+}
+
+.site-header__crumbs {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.site-header__actions {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 2.5rem;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 1.5rem 1rem 2rem;
+  }
+  .site-header__crumbs li:not(:last-child) {
+    display: none;
+  }
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: calc(var(--radius) * 0.8);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.brand-mark svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.brand-text {
+  display: grid;
+  line-height: 1.2;
+}
+
+.brand-text small {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.sidebar-empty {
+  padding: 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+/* ───── Doc content ───── */
+
+.doc-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.doc-meta__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.doc-meta__link svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.prose {
+  margin-top: 1.5rem;
+}
+
+.prose h2 {
+  margin: 2.5rem 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.25rem;
+  font-weight: 600;
+  scroll-margin-top: 4.5rem;
+}
+
+.prose > h2:first-child {
+  margin-top: 0;
+}
+
+.prose h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.prose p,
+.prose ul {
+  margin: 0 0 1rem;
+}
+
+.prose ul {
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.prose li + li {
+  margin-top: 0.25rem;
+}
+
+/* Plain links in prose only — component links (sidebar, breadcrumb, buttons) carry data-slot. */
+.prose a:not([data-slot]) {
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose :not(pre) > code {
+  padding: 0.1em 0.35em;
+  border-radius: calc(var(--radius) * 0.6);
+  background: var(--muted);
+  word-break: break-word;
+}
+
+.prose [data-slot="alert"] {
+  margin-bottom: 1rem;
+}
+
+.muted {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.example-section + .example-section {
+  margin-top: 2rem;
+}
+
+.table-scroll {
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.prop-name {
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.prop-type {
+  color: var(--muted-foreground);
+}
+
+/* ───── Example: preview / code tabs ───── */
+
+.example {
+  margin-bottom: 1rem;
+}
+
+.example__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 10rem;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle, var(--border) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--background);
+  overflow-x: auto;
+}
+
+.example__preview[hidden] {
+  display: none;
+}
+
+.example__preview > * {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .example__preview {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* ───── Code block (shiki, dual theme) ───── */
+
+.code-block {
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.example__code .code-block {
+  margin-bottom: 0;
+}
+
+.code-block__title {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.code-block__body {
+  position: relative;
+}
+
+.code-block__copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.code-block__copy:hover,
+.code-block__copy:focus-visible {
+  opacity: 1;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 1rem;
+  padding-right: 2.5rem;
+  max-height: 32rem;
+  overflow: auto;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+/* ───── Pager ───── */
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.pager__link {
+  display: grid;
+  gap: 2px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.pager__link:hover {
+  border-color: var(--primary);
+}
+
+.pager__link small {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
+.pager__link small svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.pager__link--next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.pager__link--next small {
+  justify-content: flex-end;
+}
+
+/* ───── Home ───── */
+
+.hero {
+  padding: 1.5rem 0 1rem;
+}
+
+.hero h1 {
+  margin: 1rem 0 0.75rem;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  line-height: 1.2;
+}
+
+.hero p {
+  max-width: 40rem;
+  margin: 0 0 1.5rem;
+  color: var(--muted-foreground);
+  font-size: 1.125rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.feature-grid,
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.feature {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.feature p {
+  margin: 0.25rem 0 0;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.feature__icon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-bottom: 0.75rem;
+  border-radius: calc(var(--radius) * 0.8);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+}
+
+.feature__icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.prose .chip-list li + li {
+  margin-top: 0;
+}
+
+.chip-list a {
+  display: inline-block;
+  padding: 2px 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.chip-list a:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+}
